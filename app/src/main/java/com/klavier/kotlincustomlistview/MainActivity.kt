@@ -39,9 +39,15 @@ class MainActivity : Activity() {
     }
 
     private inner class CustomListView
-                            (var context: Context, var ItemList: List<Item>): BaseAdapter(){
+                            (var context: Context, var list: List<Item>): BaseAdapter(){
 
-        private var layoutInflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+        private var layoutInflater: LayoutInflater?
+        private var ItemList: List<Item>
+
+        init{
+            layoutInflater = context.getSystemService(Context.LAYOUT_INFLATER_SERVICE) as LayoutInflater
+            ItemList = list
+        }
 
         override fun getCount(): Int {
             return ItemList.size()
@@ -56,25 +62,25 @@ class MainActivity : Activity() {
         }
 
         override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
-            var convertView = convertView
+            var view = convertView
 
             val item = getItem(position) as Item
 
             //speeding up
-            if (null == convertView) {
-                convertView = layoutInflater!!.inflate(R.layout.list_view, null)
+            if (null == view) {
+                view = layoutInflater!!.inflate(R.layout.list_view, null)
             }
 
             //set list view
-            val doName: TextView
-            doName = convertView!!.findViewById(R.id.name) as TextView
-            doName.text = item.name
+            val name: TextView?
+            name = view!!.findViewById(R.id.name) as TextView
+            name.text = item.name
 
-            val totalNo: TextView
-            totalNo = convertView.findViewById(R.id.no) as TextView
-            totalNo.text = java.lang.String.valueOf(item.no)
+            val no: TextView?
+            no = view!!.findViewById(R.id.no) as TextView
+            no.text = item.no.toString()
 
-            return convertView
+            return view
         }
     }
 
